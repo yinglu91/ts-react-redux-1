@@ -15,3 +15,7 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
+
+// npm start
+// http://localhost:3000/
+// hi there red
