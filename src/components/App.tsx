@@ -1,15 +1,32 @@
-import React from 'react'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { Todo, fetchTodos } from '../actions'
+import { StoreState } from '../reducers'
 
-interface AppProps  {
-  color: string;
+interface AppProps {
+  todos: Todo[];
+  fetchTodos(): any;
 }
 
-const App: React.FC<AppProps> = (props) => {
-  return (
-    <div>
-      <h1>hi there {props.color} </h1>
-    </div>
-  )
+// rcc
+class _App extends Component<AppProps> {
+  componentDidMount() {
+    this.props.fetchTodos()
+  }
+
+  render() {
+    console.log(this.props.todos)
+    return (
+      <div>
+        hi there
+      </div>
+    )
+  }
 }
 
-export default App
+const mapStateToProps = (state: StoreState): {todos: Todo[]} => {
+  return {todos: state.todos}
+}
+
+export const App = connect(mapStateToProps, { fetchTodos })(_App)
+
