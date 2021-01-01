@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import { connect } from 'react-redux'
 import { Todo, fetchTodos, deleteTodo } from '../actions'
 import { StoreState } from '../reducers'
@@ -31,9 +31,13 @@ class _App extends Component<AppProps, AppState> {
     this.setState({fetching: true})
   }
 
+  onTodoClick = (id: number): void => {
+    this.props.deleteTodo(id)
+  }
+
   renderList(): JSX.Element[] {
     return this.props.todos.map((todo: Todo) => {
-      return <div key={todo.id}>{ todo.title }</div>
+      return <div onClick={() =>this.onTodoClick(todo.id)} key={todo.id}>{ todo.title }</div>
     })
   }
 
@@ -41,7 +45,7 @@ class _App extends Component<AppProps, AppState> {
     return (
       <div>
         <button onClick={this.onButtonClick}>Fetch</button>
-        {this.state.fetching ? 'LOADING': ''}
+        {this.state.fetching ? 'LOADING...': ''}
         {this.renderList()}
       </div>
     )
