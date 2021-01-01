@@ -1,60 +1,44 @@
-import { Component } from 'react'
-import { connect } from 'react-redux'
+import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from "react-redux";
 import { Todo, fetchTodos, deleteTodo } from '../actions'
 import { StoreState } from '../reducers'
 
-interface AppProps {
-  todos: Todo[];
-  fetchTodos: Function;
-  deleteTodo: typeof deleteTodo;
-}
+// rafce
+const App: React.FC = () => {
+  const [fetching, setFetching] = useState(false)
 
-interface AppState {
-  fetching: boolean;
-}
-
-// rcc
-class _App extends Component<AppProps, AppState> {
-  constructor(props: AppProps) {
-    super(props)
-    this.state = {fetching: false}
+  const todos = useSelector<StoreState, Todo[]>((state) => state.todos);
+  const dispatch = useDispatch();
+  
+  const onButtonClick = (): void => {
+    dispatch(fetchTodos())
+    setFetching(true)
   }
 
-  componentDidUpdate(prevProps: AppProps): void {
-    if (!prevProps.todos.length && this.props.todos.length) {
-      this.setState({fetching: false})
+  const onTodoClick = (id: number): void => {
+    dispatch(deleteTodo(id))
+  }
+
+  useEffect(() => {
+    if (todos.length > 0) {
+      setFetching(false)
     }
-  }
+  }, [todos])
 
-  onButtonClick = (): void => {
-    this.props.fetchTodos()
-    this.setState({fetching: true})
-  }
+  return (
+    <div>
+      <button onClick={() => onButtonClick()}>Fetch</button>
+      {fetching ? 'LOADING...': ''}
 
-  onTodoClick = (id: number): void => {
-    this.props.deleteTodo(id)
-  }
-
-  renderList(): JSX.Element[] {
-    return this.props.todos.map((todo: Todo) => {
-      return <div onClick={() =>this.onTodoClick(todo.id)} key={todo.id}>{ todo.title }</div>
-    })
-  }
-
-  render() {
-    return (
-      <div>
-        <button onClick={this.onButtonClick}>Fetch</button>
-        {this.state.fetching ? 'LOADING...': ''}
-        {this.renderList()}
-      </div>
-    )
-  }
+      {
+        todos.map((todo: Todo) => (
+          <div onClick={() => onTodoClick(todo.id)} key={todo.id}>{ todo.title }</div>
+        ))
+      }
+    </div>
+  )
 }
 
-const mapStateToProps = (state: StoreState): {todos: Todo[]} => {
-  return {todos: state.todos}
-}
+export default App
 
-export const App = connect(mapStateToProps, { fetchTodos, deleteTodo })(_App)
-
+// https://codersera.com/blog/react-redux-hooks-with-typescript/
