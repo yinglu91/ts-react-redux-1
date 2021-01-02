@@ -11,6 +11,8 @@ export const reducers = combineReducers<StoreState>({
   todos: todosReducer
 })
 
+// export type StoreState = ReturnType<typeof reducers>;
+
 // {
 //   todos: [Todo, Todo, Todo]
 // }
