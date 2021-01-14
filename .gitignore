@@ -8,6 +8,10 @@
 # testing
 /coverage
 
+/.nyc_output
+
+debug.log
+
 # production
 /build
 

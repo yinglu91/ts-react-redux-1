@@ -32,7 +32,7 @@ const App: React.FC = () => {
 
       {
         todos.map((todo: Todo) => (
-          <div onClick={() => onTodoClick(todo.id)} key={todo.id}>{ todo.title }</div>
+          <div id={todo.id.toString()} onClick={() => onTodoClick(todo.id)} key={todo.id}>{ todo.title }</div>
         ))
       }
     </div>
