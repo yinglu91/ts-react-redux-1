@@ -1,38 +1,24 @@
-import { useState, useEffect } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { Todo, fetchTodos, deleteTodo } from '../actions'
 import { StoreState } from '../reducers'
 
 // rafce
 const App: React.FC = () => {
-  const [fetching, setFetching] = useState(false)
-
-  const todos = useSelector<StoreState, Todo[]>((state) => state.todos);
-  const dispatch = useDispatch();
+  const todos = useSelector<StoreState, Todo[]>((state) => state.todos)
   
-  const onButtonClick = (): void => {
-    dispatch(fetchTodos())
-    setFetching(true)
-  }
-
-  const onTodoClick = (id: number): void => {
-    dispatch(deleteTodo(id))
-  }
-
-  useEffect(() => {
-    if (todos.length > 0) {
-      setFetching(false)
-    }
-  }, [todos])
+  const dispatch = useDispatch()
 
   return (
     <div>
-      <button onClick={() => onButtonClick()}>Fetch</button>
-      {fetching ? 'LOADING...': ''}
+      <button onClick={() => dispatch(fetchTodos())}>Fetch</button>
 
       {
         todos.map((todo: Todo) => (
-          <div id={todo.id.toString()} onClick={() => onTodoClick(todo.id)} key={todo.id}>{ todo.title }</div>
+          <div id={todo.id.toString()} key={todo.id}
+            onClick={() => dispatch(deleteTodo(todo.id))}>
+              {todo.title}
+          </div>
         ))
       }
     </div>
