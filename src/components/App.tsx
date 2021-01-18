@@ -5,8 +5,8 @@ import { StoreState } from '../reducers'
 
 // rafce
 const App: React.FC = () => {
-  const todos = useSelector<StoreState, Todo[]>((state) => state.todos)
-  
+  const todos = useSelector<StoreState, Todo[]>((storeState) => storeState.todos)
+
   const dispatch = useDispatch()
 
   return (
